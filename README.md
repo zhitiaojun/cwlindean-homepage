@@ -10,7 +10,7 @@
 
 ### 部署
 
-已部署在 Cloudflare Pages：**[cwlindean.pages.dev](https://cwlindean.pages.dev)**
+已部署在 Cloudflare Pages：**[cwlindean.top](https://cwlindean.top)**
 
 ```bash
 # 本地预览：直接用浏览器打开 index.html
