@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cwlindean</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Tokens: Light (default) ───────────────────────── */
+    :root {
+      --bg:       #FBFAF7;
+      --surface:  #FFFFFF;
+      --text:     #1C1A18;
+      --muted:    #6B5F56;
+      --accent:   #C2633E;
+      --accent-dim:#A85635;
+      --border:   #E5DFD7;
+      --hover:    #F5F0E9;
+      --shadow:   0 1px 2px rgba(28, 26, 24, 0.04),
+                  0 4px 16px rgba(28, 26, 24, 0.04);
+      --shadow-lg:0 2px 4px rgba(28, 26, 24, 0.03),
+                  0 8px 32px rgba(28, 26, 24, 0.06);
+      --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+      --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+      --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Consolas", monospace;
+      --radius: 12px;
+      --max-w:  560px;
+
+      /* icon theme colors — light */
+      --ic-cloud-bg: #EDF0F5; --ic-cloud-fg: #5A7BA8;
+      --ic-chat-bg:  #F5EEFC; --ic-chat-fg:  #7B5EA7;
+      --ic-api-bg:   #ECF5EE; --ic-api-fg:   #4E8A5E;
+      --ic-movie-bg: #FCF0ED; --ic-movie-fg: #B85C4A;
+      --ic-clip-bg:  #EEF3F5; --ic-clip-fg:  #5A8A9E;
+      --ic-gh-bg:    #F0F0F0; --ic-gh-fg:    #333;
+    }
+
+    /* ── Tokens: Dark ──────────────────────────────────── */
+    [data-theme="dark"] {
+      --bg:       #1C1A18;
+      --surface:  #282522;
+      --text:     #EBE5DD;
+      --muted:    #A09588;
+      --accent:   #D48462;
+      --accent-dim:#C06A48;
+      --border:   #3A3430;
+      --hover:    #302B27;
+      --shadow:   0 1px 2px rgba(0,0,0,0.2),
+                  0 4px 16px rgba(0,0,0,0.25);
+      --shadow-lg:0 2px 4px rgba(0,0,0,0.15),
+                  0 8px 32px rgba(0,0,0,0.3);
+      --ic-cloud-bg: #222B35; --ic-cloud-fg: #7BA3CC;
+      --ic-chat-bg:  #2A2235; --ic-chat-fg:  #9E7DCC;
+      --ic-api-bg:   #1E2E23; --ic-api-fg:   #6AAA72;
+      --ic-movie-bg: #352320; --ic-movie-fg: #CC7766;
+      --ic-clip-bg:  #1F2B30; --ic-clip-fg:  #72A9BD;
+      --ic-gh-bg:    #333;    --ic-gh-fg:    #CCC;
+    }
+
+    /* auto-detect OS preference on first visit (no stored choice) */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme]) {
+        --bg:       #1C1A18;
+        --surface:  #282522;
+        --text:     #EBE5DD;
+        --muted:    #A09588;
+        --accent:   #D48462;
+        --accent-dim:#C06A48;
+        --border:   #3A3430;
+        --hover:    #302B27;
+        --shadow:   0 1px 2px rgba(0,0,0,0.2),
+                    0 4px 16px rgba(0,0,0,0.25);
+        --shadow-lg:0 2px 4px rgba(0,0,0,0.15),
+                    0 8px 32px rgba(0,0,0,0.3);
+        --ic-cloud-bg: #222B35; --ic-cloud-fg: #7BA3CC;
+        --ic-chat-bg:  #2A2235; --ic-chat-fg:  #9E7DCC;
+        --ic-api-bg:   #1E2E23; --ic-api-fg:   #6AAA72;
+        --ic-movie-bg: #352320; --ic-movie-fg: #CC7766;
+        --ic-clip-bg:  #1F2B30; --ic-clip-fg:  #72A9BD;
+        --ic-gh-bg:    #333;    --ic-gh-fg:    #CCC;
+      }
+    }
+
+    /* ── Base ──────────────────────────────────────────── */
+    html {
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    }
+
+    [data-theme="dark"] body { background-image: none; }
+
+    /* ── Theme toggle ──────────────────────────────────── */
+    .theme-toggle {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.25rem;
+      z-index: 10;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      box-shadow: var(--shadow-lg);
+    }
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .theme-toggle svg { width: 17px; height: 17px; }
+    /* show sun in dark mode, moon in light mode */
+    .theme-toggle .icon-sun  { display: none; }
+    .theme-toggle .icon-moon { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-sun  { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+    /* ── Layout ────────────────────────────────────────── */
+    .page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem 1.25rem 3rem;
+    }
+    .container {
+      width: 100%;
+      max-width: var(--max-w);
+    }
+
+    /* ── Header ────────────────────────────────────────── */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    /* Geometric abstract avatar — concentric arcs forming a "c" */
+    .avatar {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.25rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .avatar svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .name {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      line-height: 1.15;
+      margin-bottom: 0.35rem;
+    }
+
+    .bio {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    /* ── Divider ───────────────────────────────────────── */
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 1px;
+      margin: 0 auto 2.5rem;
+      opacity: 0.5;
+    }
+
+    /* ── Section label ─────────────────────────────────── */
+    .section-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+      padding-left: 0.15rem;
+    }
+
+    /* ── Links grid ────────────────────────────────────── */
+    .links {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.85rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 450;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .link-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 12px;
+      bottom: 12px;
+      width: 3px;
+      background: var(--accent);
+      border-radius: 0 2px 2px 0;
+      transform: scaleY(0);
+      transition: transform 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+
+    .link-card:hover {
+      border-color: #D4C8BB;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px);
+    }
+    .link-card:hover::before { transform: scaleY(1); }
+    .link-card:active {
+      transform: translateY(0);
+      box-shadow: var(--shadow);
+    }
+    .link-card:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .link-icon {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .link-domain {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      letter-spacing: -0.01em;
+      margin-top: -1px;
+    }
+
+    /* icon themes via custom properties */
+    .icon-cloud { background: var(--ic-cloud-bg); color: var(--ic-cloud-fg); }
+    .icon-chat  { background: var(--ic-chat-bg);  color: var(--ic-chat-fg);  }
+    .icon-api   { background: var(--ic-api-bg);   color: var(--ic-api-fg);   }
+    .icon-movie { background: var(--ic-movie-bg); color: var(--ic-movie-fg); }
+    .icon-clip  { background: var(--ic-clip-bg);  color: var(--ic-clip-fg);  }
+
+    /* ── GitHub row ────────────────────────────────────── */
+    .github-row {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 450;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow);
+    }
+    .github-link:hover {
+      border-color: #C8BFB5;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px);
+    }
+    .github-link:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .github-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    /* ── Footer ────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      opacity: 0.7;
+    }
+    .footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer a:hover { color: var(--accent); }
+
+    /* ── Responsive ────────────────────────────────────── */
+    @media (max-width: 480px) {
+      html { font-size: 16px; }
+      .page { padding: 1.5rem 1rem 2.5rem; }
+      .name { font-size: 1.8rem; }
+      .links { grid-template-columns: 1fr; }
+      .link-card { padding: 0.75rem 0.9rem; }
+      .header { margin-bottom: 2rem; }
+      .divider { margin-bottom: 2rem; }
+    }
+
+    /* ── Reduced motion ────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .link-card, .github-link, .theme-toggle { transition: none; }
+      .link-card::before { transition: none; }
+      .link-card:hover, .github-link:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ── Theme toggle ──────────────────────────────────── -->
+  <button class="theme-toggle" id="themeToggle" aria-label="切换深色模式" title="切换深色 / 浅色模式">
+    <!-- moon icon (shown in light mode) -->
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <!-- sun icon (shown in dark mode) -->
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+  </button>
+
+  <div class="page">
+    <div class="container">
+
+      <!-- ── Header ────────────────────────────────────── -->
+      <header class="header">
+        <!-- Geometric abstract mark: two concentric arcs suggesting "c" -->
+        <div class="avatar" aria-hidden="true">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- outer ring -->
+            <circle cx="40" cy="40" r="36" stroke="var(--border)" stroke-width="1.5" opacity="0.6"/>
+            <!-- thick arc — the "c" shape -->
+            <path d="M54 28 A20 20 0 1 0 54 52"
+                  stroke="var(--accent)" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <!-- dot accent -->
+            <circle cx="52" cy="24" r="3" fill="var(--accent)" opacity="0.7"/>
+          </svg>
+        </div>
+        <h1 class="name">cwlindean</h1>
+        <p class="bio">不知名开发者</p>
+      </header>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <!-- ── Services ──────────────────────────────────── -->
+      <p class="section-label">服务</p>
+      <nav class="links" aria-label="我的服务">
+        <a href="https://cloud.cwlindean.top" class="link-card" target="_blank" rel="noopener">
+          <span class="link-icon icon-cloud" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+          </span>
+          <span>云盘<span class="link-domain">cloud.cwlindean.top</span></span>
+        </a>
+
+        <a href="https://chat.cwlindean.top" class="link-card" target="_blank" rel="noopener">
+          <span class="link-icon icon-chat" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </span>
+          <span>AI 对话<span class="link-domain">chat.cwlindean.top</span></span>
+        </a>
+
+        <a href="https://api3.cwlindean.top" class="link-card" target="_blank" rel="noopener">
+          <span class="link-icon icon-api" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </span>
+          <span>NewAPI<span class="link-domain">api3.cwlindean.top</span></span>
+        </a>
+
+        <a href="https://movie.cwlindean.top" class="link-card" target="_blank" rel="noopener">
+          <span class="link-icon icon-movie" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg>
+          </span>
+          <span>观影<span class="link-domain">movie.cwlindean.top</span></span>
+        </a>
+
+        <a href="https://netcut.cwlindean.top" class="link-card" target="_blank" rel="noopener">
+          <span class="link-icon icon-clip" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+          </span>
+          <span>剪贴板<span class="link-domain">netcut.cwlindean.top</span></span>
+        </a>
+      </nav>
+
+      <!-- ── GitHub ────────────────────────────────────── -->
+      <div class="github-row">
+        <a href="https://github.com/zhitiaojun" class="github-link" target="_blank" rel="noopener">
+          <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+
+      <!-- ── Footer ────────────────────────────────────── -->
+      <footer class="footer">
+        <p>© 2026 <a href="https://github.com/zhitiaojun">cwlindean</a> &mdash; Made with curiosity</p>
+      </footer>
+
+    </div>
+  </div>
+
+  <script>
+    /* ── Theme toggle ──────────────────────────────────── */
+    (function () {
+      const html = document.documentElement;
+      const btn  = document.getElementById('themeToggle');
+
+      // On first load: if user has a stored preference, apply it; otherwise follow OS
+      const stored = localStorage.getItem('theme');
+      if (stored === 'dark' || stored === 'light') {
+        html.setAttribute('data-theme', stored);
+      } else {
+        // No stored pref — remove data-theme so CSS media query takes over
+        html.removeAttribute('data-theme');
+      }
+
+      // Toggle on click
+      btn.addEventListener('click', function () {
+        const current = html.getAttribute('data-theme');
+        const next    = (current === 'dark') ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+      });
+    })();
+  </script>
+</body>
+</html>
