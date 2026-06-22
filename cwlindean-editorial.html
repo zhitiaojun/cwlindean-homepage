@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cwlindean — 不知名开发者</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #F4F2EC;
+    --ink: #2A2A28;
+    --ink-light: #5C5B56;
+    --muted: #8A8982;
+    --hairline: #D9D6CD;
+    --hairline-light: #E8E5DB;
+    --accent: #C8161D;
+    --font-display: 'Newsreader', 'Noto Serif SC', 'SimSun', serif;
+    --font-body: 'Plus Jakarta Sans', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif;
+    --ease-glacial: cubic-bezier(0.4, 0, 0.2, 1);
+    --max-width: 680px;
+    --section-gap: 100px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ── Main column ── */
+  .column {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ── Top rule ── */
+  .top-rule {
+    width: 100%;
+    height: 1px;
+    background: var(--hairline);
+    margin-top: 64px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 48px 0 0;
+  }
+
+  .hero-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 56px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .hero-bio {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-light);
+    margin-top: 20px;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-rule {
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+    margin-top: 32px;
+  }
+
+  .hero-github {
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .hero-github a {
+    color: var(--ink-light);
+    text-decoration: none;
+    border-bottom: 1px solid var(--hairline);
+    transition: color 600ms var(--ease-glacial), border-color 600ms var(--ease-glacial);
+  }
+
+  .hero-github a:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+
+  /* ── Projects section ── */
+  .projects-section {
+    margin-top: var(--section-gap);
+  }
+
+  .section-label {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+
+  .project-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--hairline);
+    text-decoration: none;
+    color: var(--ink);
+    transition: padding 900ms var(--ease-glacial);
+    position: relative;
+  }
+
+  .project-item:first-child {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .project-item:hover {
+    padding-left: 24px;
+  }
+
+  .project-item .index {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    min-width: 32px;
+    transition: color 600ms var(--ease-glacial);
+  }
+
+  .project-item:hover .index {
+    color: var(--accent);
+  }
+
+  .project-item .name {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    flex: 1;
+    margin: 0 32px;
+  }
+
+  .project-item .domain {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--font-body);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    transition: color 600ms var(--ease-glacial);
+  }
+
+  .project-item:hover .domain {
+    color: var(--ink-light);
+  }
+
+  .project-item .arrow {
+    font-size: 16px;
+    color: var(--hairline);
+    margin-left: 16px;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 600ms var(--ease-glacial);
+  }
+
+  .project-item:hover .arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--accent);
+  }
+
+  /* ── Footer ── */
+  .footer-section {
+    margin-top: var(--section-gap);
+    padding-bottom: 64px;
+  }
+
+  .footer-rule {
+    width: 100%;
+    height: 1px;
+    background: var(--hairline);
+    margin-bottom: 24px;
+  }
+
+  .footer-text {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .footer-text span {
+    color: var(--hairline);
+    margin: 0 8px;
+  }
+
+  /* ── Tweaks ── */
+  .tweaks-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 36px;
+    height: 36px;
+    border-radius: 0;
+    background: transparent;
+    border: 1px solid var(--hairline);
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    z-index: 10000;
+    transition: all 600ms var(--ease-glacial);
+    font-family: var(--font-body);
+  }
+
+  .tweaks-toggle:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .tweaks-panel {
+    position: fixed;
+    bottom: 72px;
+    right: 24px;
+    width: 240px;
+    background: var(--ground);
+    border: 1px solid var(--hairline);
+    padding: 24px;
+    color: var(--ink);
+    font-size: 13px;
+    z-index: 9999;
+    display: none;
+  }
+
+  .tweaks-panel.open { display: block; }
+
+  .tweaks-title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-style: italic;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+
+  .tweak-group {
+    margin-bottom: 18px;
+  }
+
+  .tweak-label {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .tweak-group input[type="color"] {
+    width: 100%;
+    height: 28px;
+    border: 1px solid var(--hairline);
+    background: var(--ground);
+    cursor: pointer;
+    padding: 1px;
+    border-radius: 0;
+  }
+
+  .tweak-group select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--hairline);
+    background: var(--ground);
+    color: var(--ink);
+    font-size: 13px;
+    font-family: var(--font-body);
+    cursor: pointer;
+    border-radius: 0;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 720px) {
+    :root { --section-gap: 88px; }
+    .column { padding: 0 28px; }
+    .project-item { flex-wrap: wrap; gap: 10px; padding: 22px 0; }
+    .project-item .name { margin: 0; flex: 1 1 100%; order: -1; font-size: 20px; }
+    .project-item .domain { font-size: 12px; }
+    .project-item .index { min-width: 26px; font-size: 12px; }
+    .hero { padding-top: 44px; }
+    .top-rule { margin-top: 48px; }
+    .hero-name { font-size: clamp(36px, 7vw, 48px); }
+    .hero-bio { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-rule"></div>
+
+<div class="column">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-label">01 — Home</div>
+    <h1 class="hero-name">cwlindean</h1>
+    <p class="hero-bio">不知名开发者</p>
+    <div class="hero-rule"></div>
+    <div class="hero-github">
+      GitHub / <a href="https://github.com/zhitiaojun" target="_blank" rel="noopener">zhitiaojun</a>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="projects-section">
+    <div class="section-label">02 — Projects</div>
+    <div class="project-list">
+      <a href="https://cloud.cwlindean.top" class="project-item" target="_blank" rel="noopener">
+        <span class="index">01</span>
+        <span class="name">云盘</span>
+        <span class="domain">cloud.cwlindean.top</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://chat.cwlindean.top" class="project-item" target="_blank" rel="noopener">
+        <span class="index">02</span>
+        <span class="name">AI 对话</span>
+        <span class="domain">chat.cwlindean.top</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://api3.cwlindean.top" class="project-item" target="_blank" rel="noopener">
+        <span class="index">03</span>
+        <span class="name">NewAPI</span>
+        <span class="domain">api3.cwlindean.top</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://movie.cwlindean.top" class="project-item" target="_blank" rel="noopener">
+        <span class="index">04</span>
+        <span class="name">观影</span>
+        <span class="domain">movie.cwlindean.top</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://netcut.cwlindean.top" class="project-item" target="_blank" rel="noopener">
+        <span class="index">05</span>
+        <span class="name">剪贴板</span>
+        <span class="domain">netcut.cwlindean.top</span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://file.cwlindean.top" class="project-item" target="_blank" rel="noopener">
+        <span class="index">06</span>
+        <span class="name">文件分享</span>
+        <span class="domain">file.cwlindean.top</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer-section">
+    <div class="footer-rule"></div>
+    <p class="footer-text">
+      cwlindean<span>·</span>不知名开发者<span>·</span>2026
+    </p>
+  </footer>
+
+</div>
+
+<!-- Tweaks -->
+<button class="tweaks-toggle" id="tweaksBtn">±</button>
+<div class="tweaks-panel" id="tweaksPanel">
+  <div class="tweaks-title">Tweaks</div>
+  <div class="tweak-group">
+    <label class="tweak-label">Paper Tone</label>
+    <select id="paperTone">
+      <option value="warm" selected>Warm Paper</option>
+      <option value="cool">Cool Paper</option>
+      <option value="bright">Bright White</option>
+    </select>
+  </div>
+  <div class="tweak-group">
+    <label class="tweak-label">Typography Scale</label>
+    <select id="typeScale">
+      <option value="default" selected>Default</option>
+      <option value="large">Large</option>
+      <option value="small">Small</option>
+    </select>
+  </div>
+  <div class="tweak-group">
+    <label class="tweak-label">Accent</label>
+    <input type="color" id="accentColor" value="#C8161D">
+  </div>
+</div>
+
+<script>
+  // Tweaks toggle
+  const tweaksBtn = document.getElementById('tweaksBtn');
+  const tweaksPanel = document.getElementById('tweaksPanel');
+  tweaksBtn.addEventListener('click', () => tweaksPanel.classList.toggle('open'));
+
+  // Paper tone
+  document.getElementById('paperTone').addEventListener('change', e => {
+    const tones = {
+      warm: { ground: '#F4F2EC', ink: '#2A2A28', muted: '#8A8982', hairline: '#D9D6CD' },
+      cool: { ground: '#F0F1F4', ink: '#24252A', muted: '#878897', hairline: '#D2D3DB' },
+      bright: { ground: '#FAFAFA', ink: '#1A1A1A', muted: '#9A9A9A', hairline: '#E5E5E5' }
+    };
+    const t = tones[e.target.value];
+    const root = document.documentElement.style;
+    root.setProperty('--ground', t.ground);
+    root.setProperty('--ink', t.ink);
+    root.setProperty('--muted', t.muted);
+    root.setProperty('--hairline', t.hairline);
+  });
+
+  // Type scale
+  document.getElementById('typeScale').addEventListener('change', e => {
+    const scales = { small: '36px', default: '48px', large: '64px' };
+    const nameSizes = { small: '20px', default: '24px', large: '28px' };
+    const heroSize = scales[e.target.value];
+    const projectSize = nameSizes[e.target.value];
+    document.querySelector('.hero-name').style.fontSize = heroSize;
+    document.querySelectorAll('.project-item .name').forEach(el => el.style.fontSize = projectSize);
+  });
+
+  // Accent
+  document.getElementById('accentColor').addEventListener('input', e => {
+    document.documentElement.style.setProperty('--accent', e.target.value);
+  });
+</script>
+</body>
+</html>

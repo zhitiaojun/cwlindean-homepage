@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cwlindean — 不知名开发者</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ground: #F1ECDE;
+    --surface-card: #FAF7F0;
+    --ink: #1A1A18;
+    --ink-light: #4A4840;
+    --muted: #736D5A;
+    --hairline: #C8BEA4;
+    --accent-teal: #1B4B5A;
+    --accent-sienna: #A04A2A;
+    --accent-olive: #5A6B3A;
+    --accent-gold: #8B6914;
+    --accent-slate: #3A4A5A;
+    --accent-plum: #5A3A4A;
+    --shadow-sm: 0 1px 2px rgba(26, 26, 24, 0.04);
+    --shadow-card: 0 2px 8px rgba(26, 26, 24, 0.06), 0 12px 32px rgba(26, 26, 24, 0.08);
+    --shadow-card-hover: 0 4px 16px rgba(26, 26, 24, 0.08), 0 24px 48px rgba(26, 26, 24, 0.14);
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --font-display: 'Sora', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    --font-serif: 'Newsreader', 'Noto Serif SC', 'SimSun', serif;
+    --font-body: 'Outfit', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    --ease-warm: cubic-bezier(0.33, 0.1, 0.15, 1);
+    --ease-float: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(160, 74, 42, 0.03) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 30%, rgba(27, 75, 90, 0.03) 0%, transparent 60%),
+      radial-gradient(ellipse at 50% 70%, rgba(90, 107, 58, 0.03) 0%, transparent 50%);
+  }
+
+  /* ── Layout ── */
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ── Nav ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 0;
+  }
+
+  .nav-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #C8A882 0%, #A08060 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 600;
+    color: #FAF7F0;
+    letter-spacing: -0.01em;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .nav-github {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 100px;
+    background: var(--surface-card);
+    border: 1px solid var(--hairline);
+    color: var(--ink-light);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font-body);
+    transition: all 250ms var(--ease-warm);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .nav-github:hover {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+    box-shadow: var(--shadow-card);
+    transform: translateY(-1px);
+  }
+
+  .nav-github svg { width: 18px; height: 18px; }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 48px 0 32px;
+    text-align: center;
+  }
+
+  .hero-greeting {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-style: italic;
+    color: var(--accent-sienna);
+    margin-bottom: 24px;
+    font-weight: 400;
+    opacity: 0.85;
+  }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--ink);
+  }
+
+  .hero-bio {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-light);
+    margin-top: 16px;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-divider {
+    width: 60px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--accent-sienna);
+    margin: 36px auto 0;
+    opacity: 0.5;
+  }
+
+  /* ── Projects section ── */
+  .projects-section {
+    padding: 64px 0 40px;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .section-label {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 100px;
+    background: var(--surface-card);
+    border: 1px solid var(--hairline);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ── Project grid ── */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .project-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 32px 28px;
+    border-radius: var(--radius-md);
+    background: var(--surface-card);
+    border: 1px solid var(--hairline);
+    box-shadow: var(--shadow-card);
+    text-decoration: none;
+    color: var(--ink);
+    transition: all 350ms var(--ease-float);
+    overflow: hidden;
+  }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    opacity: 0;
+    transition: opacity 350ms var(--ease-float);
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .project-card:hover::after {
+    opacity: 1;
+  }
+
+  /* Card color variants — each project gets its own accent stripe */
+  .project-card:nth-child(1)::after { background: var(--accent-teal); }
+  .project-card:nth-child(2)::after { background: var(--accent-sienna); }
+  .project-card:nth-child(3)::after { background: var(--accent-olive); }
+  .project-card:nth-child(4)::after { background: var(--accent-gold); }
+  .project-card:nth-child(5)::after { background: var(--accent-slate); }
+  .project-card:nth-child(6)::after { background: var(--accent-plum); }
+
+  .project-card:nth-child(1) .project-icon { background: rgba(27,75,90,0.1); color: var(--accent-teal); }
+  .project-card:nth-child(2) .project-icon { background: rgba(160,74,42,0.1); color: var(--accent-sienna); }
+  .project-card:nth-child(3) .project-icon { background: rgba(90,107,58,0.1); color: var(--accent-olive); }
+  .project-card:nth-child(4) .project-icon { background: rgba(139,105,20,0.1); color: var(--accent-gold); }
+  .project-card:nth-child(5) .project-icon { background: rgba(58,74,90,0.1); color: var(--accent-slate); }
+  .project-card:nth-child(6) .project-icon { background: rgba(90,58,74,0.1); color: var(--accent-plum); }
+
+  .project-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .project-name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  .project-domain {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--font-body);
+    letter-spacing: 0.01em;
+    word-break: break-all;
+  }
+
+  .project-hint {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: auto;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: all 300ms var(--ease-float);
+  }
+
+  .project-card:hover .project-hint {
+    opacity: 0.7;
+    transform: translateY(0);
+  }
+
+  .project-card:nth-child(1) .project-hint { color: var(--accent-teal); }
+  .project-card:nth-child(2) .project-hint { color: var(--accent-sienna); }
+  .project-card:nth-child(3) .project-hint { color: var(--accent-olive); }
+  .project-card:nth-child(4) .project-hint { color: var(--accent-gold); }
+  .project-card:nth-child(5) .project-hint { color: var(--accent-slate); }
+  .project-card:nth-child(6) .project-hint { color: var(--accent-plum); }
+
+  /* ── About section ── */
+  .about-section {
+    padding: 60px 0;
+    text-align: center;
+  }
+
+  .about-card {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    background: var(--surface-card);
+    border: 1px solid var(--hairline);
+    box-shadow: var(--shadow-card);
+  }
+
+  .about-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #C8A882 0%, #8B6914 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    color: #FAF7F0;
+    margin: 0 auto 20px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .about-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .about-bio {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-style: italic;
+    color: var(--ink-light);
+    margin-top: 8px;
+  }
+
+  .about-github {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 22px;
+    border-radius: 100px;
+    background: var(--ground);
+    border: 1px solid var(--hairline);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 250ms var(--ease-warm);
+  }
+
+  .about-github:hover {
+    background: var(--ink);
+    color: var(--surface-card);
+    border-color: var(--ink);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* ── Footer ── */
+  footer {
+    padding: 48px 0 56px;
+    text-align: center;
+    border-top: 1px solid var(--hairline);
+    margin-top: 40px;
+  }
+
+  .footer-text {
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.03em;
+  }
+
+  .footer-heart {
+    color: var(--accent-sienna);
+  }
+
+  /* ── Tweaks ── */
+  .tweaks-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--surface-card);
+    border: 1px solid var(--hairline);
+    color: var(--ink-light);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    z-index: 10000;
+    box-shadow: var(--shadow-card);
+    transition: all 250ms var(--ease-warm);
+    font-family: var(--font-body);
+  }
+
+  .tweaks-toggle:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .tweaks-panel {
+    position: fixed;
+    bottom: 76px;
+    right: 24px;
+    width: 250px;
+    background: var(--surface-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--hairline);
+    padding: 20px;
+    color: var(--ink);
+    font-size: 13px;
+    z-index: 9999;
+    box-shadow: var(--shadow-card-hover);
+    display: none;
+  }
+
+  .tweaks-panel.open { display: block; }
+
+  .tweaks-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .tweak-group {
+    margin-bottom: 16px;
+  }
+
+  .tweak-label {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+
+  .tweak-group input[type="color"] {
+    width: 100%;
+    height: 30px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--hairline);
+    background: var(--ground);
+    cursor: pointer;
+    padding: 2px;
+  }
+
+  .tweak-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--ground);
+    border: 1px solid var(--hairline);
+    color: var(--ink);
+    font-size: 13px;
+    font-family: var(--font-body);
+    cursor: pointer;
+  }
+
+  .tweak-group input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent-sienna);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 800px) {
+    .container { padding: 0 20px; }
+    .project-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .project-card { padding: 24px 20px; }
+    nav { padding: 24px 0; }
+  }
+
+  @media (max-width: 520px) {
+    .container { padding: 0 16px; }
+    .hero { padding: 28px 0 16px; }
+    .hero-name { font-size: 34px; }
+    .hero-bio { font-size: 17px; }
+    .hero-greeting { font-size: 15px; margin-bottom: 16px; }
+    .hero-divider { margin-top: 24px; }
+    .section-header { margin-bottom: 28px; }
+    .projects-section { padding: 40px 0 24px; }
+
+    /* Horizontal compact cards */
+    .project-grid { grid-template-columns: 1fr; gap: 10px; }
+    .project-card {
+      flex-direction: row;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: var(--radius-sm);
+    }
+    .project-icon {
+      width: 36px;
+      height: 36px;
+      font-size: 16px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    .project-name {
+      font-size: 16px;
+      flex: 1;
+      min-width: 0;
+    }
+    .project-domain {
+      font-size: 11px;
+      flex-shrink: 0;
+      max-width: 140px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .project-hint { display: none; }
+    .project-card:hover { transform: translateX(4px); }
+
+    /* About */
+    .about-section { padding: 36px 0; }
+    .about-card { padding: 24px 18px; border-radius: var(--radius-md); }
+    .about-avatar { width: 56px; height: 56px; font-size: 22px; margin-bottom: 14px; }
+    .about-name { font-size: 19px; }
+    .about-bio { font-size: 14px; }
+
+    /* Nav */
+    nav { padding: 20px 0; }
+    .nav-avatar { width: 36px; height: 36px; font-size: 14px; }
+    .nav-github { font-size: 12px; padding: 6px 14px; gap: 6px; }
+    .nav-github svg { width: 15px; height: 15px; }
+
+    /* Footer */
+    footer { padding: 32px 0 40px; margin-top: 24px; }
+    .footer-text { font-size: 12px; }
+
+    /* Tweaks */
+    .tweaks-toggle { width: 36px; height: 36px; font-size: 15px; bottom: 16px; right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-avatar">c</div>
+    <a href="https://github.com/zhitiaojun" class="nav-github" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      zhitiaojun
+    </a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <p class="hero-greeting">你好，我是</p>
+    <h1 class="hero-name">cwlindean</h1>
+    <p class="hero-bio">不知名开发者</p>
+    <div class="hero-divider"></div>
+  </section>
+
+  <!-- Projects -->
+  <section class="projects-section">
+    <div class="section-header">
+      <span class="section-label">我的项目</span>
+    </div>
+    <div class="project-grid">
+      <a href="https://cloud.cwlindean.top" class="project-card" target="_blank" rel="noopener">
+        <div class="project-icon">☁</div>
+        <span class="project-name">云盘</span>
+        <span class="project-domain">cloud.cwlindean.top</span>
+        <span class="project-hint">浏览 →</span>
+      </a>
+      <a href="https://chat.cwlindean.top" class="project-card" target="_blank" rel="noopener">
+        <div class="project-icon">◇</div>
+        <span class="project-name">AI 对话</span>
+        <span class="project-domain">chat.cwlindean.top</span>
+        <span class="project-hint">浏览 →</span>
+      </a>
+      <a href="https://api3.cwlindean.top" class="project-card" target="_blank" rel="noopener">
+        <div class="project-icon">⎔</div>
+        <span class="project-name">NewAPI</span>
+        <span class="project-domain">api3.cwlindean.top</span>
+        <span class="project-hint">浏览 →</span>
+      </a>
+      <a href="https://movie.cwlindean.top" class="project-card" target="_blank" rel="noopener">
+        <div class="project-icon">▸</div>
+        <span class="project-name">观影</span>
+        <span class="project-domain">movie.cwlindean.top</span>
+        <span class="project-hint">浏览 →</span>
+      </a>
+      <a href="https://netcut.cwlindean.top" class="project-card" target="_blank" rel="noopener">
+        <div class="project-icon">⎘</div>
+        <span class="project-name">剪贴板</span>
+        <span class="project-domain">netcut.cwlindean.top</span>
+        <span class="project-hint">浏览 →</span>
+      </a>
+      <a href="https://file.cwlindean.top" class="project-card" target="_blank" rel="noopener">
+        <div class="project-icon">⬒</div>
+        <span class="project-name">文件分享</span>
+        <span class="project-domain">file.cwlindean.top</span>
+        <span class="project-hint">浏览 →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="about-section">
+    <div class="about-card">
+      <div class="about-avatar">c</div>
+      <div class="about-name">cwlindean</div>
+      <div class="about-bio">不知名开发者</div>
+      <a href="https://github.com/zhitiaojun" class="about-github" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub / zhitiaojun
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p class="footer-text">
+      用 <span class="footer-heart">♥</span> 构建 · cwlindean · 2026
+    </p>
+  </footer>
+
+</div>
+
+<!-- Tweaks -->
+<button class="tweaks-toggle" id="tweaksBtn">✦</button>
+<div class="tweaks-panel" id="tweaksPanel">
+  <div class="tweaks-title">Tweaks</div>
+  <div class="tweak-group">
+    <label class="tweak-label">Background Warmth</label>
+    <select id="bgWarmth">
+      <option value="warm" selected>Warm Bone</option>
+      <option value="cream">Soft Cream</option>
+      <option value="natural">Natural Linen</option>
+    </select>
+  </div>
+  <div class="tweak-group">
+    <label class="tweak-label">Card Radius</label>
+    <input type="range" id="cardRadius" min="4" max="32" value="16">
+  </div>
+  <div class="tweak-group">
+    <label class="tweak-label">Accent Color</label>
+    <input type="color" id="accentColor" value="#A04A2A">
+  </div>
+</div>
+
+<script>
+  // Tweaks toggle
+  document.getElementById('tweaksBtn').addEventListener('click', () => {
+    document.getElementById('tweaksPanel').classList.toggle('open');
+  });
+
+  // Background warmth
+  document.getElementById('bgWarmth').addEventListener('change', e => {
+    const tones = {
+      warm: '#F1ECDE',
+      cream: '#F7F3E8',
+      natural: '#EFEDE4'
+    };
+    document.documentElement.style.setProperty('--ground', tones[e.target.value]);
+  });
+
+  // Card radius
+  document.getElementById('cardRadius').addEventListener('input', e => {
+    document.documentElement.style.setProperty('--radius-md', `${e.target.value}px`);
+  });
+
+  // Accent color
+  document.getElementById('accentColor').addEventListener('input', e => {
+    document.documentElement.style.setProperty('--accent-sienna', e.target.value);
+  });
+</script>
+</body>
+</html>
